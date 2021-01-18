@@ -212,6 +212,7 @@ if __name__ == '__main__':
         print_error_exit()
     
     regnie_fn = None
+
     
     for arg in sys.argv:
         if arg == "-j":
@@ -223,13 +224,14 @@ if __name__ == '__main__':
         else:
             regnie_fn = arg
     
-    
+        
+
     if not regnie_fn or not os.path.exists(regnie_fn):
         print_error_exit("REGNIE-Inputfile '{}' wurde nicht gefunden!".format(regnie_fn))
     
     
     
-    raster_fn_without_ext = os.path.splitext(regnie_fn)[0]
+    raster_fn_without_ext = os.path.splitext(regnie_fn)[0] + "\\"
     
     
     
@@ -239,8 +241,15 @@ if __name__ == '__main__':
     
     # Standard:
     if not csv_join_mode:
-        csv_fn = raster_fn_without_ext + "_full.csv"
-        create_full_csv(regnie_fn, csv_fn)
+        print("Ordner anlegen...")
+        newFolderPath = raster_fn_without_ext+"target\\"
+        if not os.path.exists(newFolderPath):
+            os.makedirs(newFolderPath)
+        for filename in os.listdir(regnie_fn):
+            filepath = raster_fn_without_ext + filename
+            csv_fn = newFolderPath + filename + "_target.csv"
+            print(filepath, csv_fn)
+            create_full_csv(filepath, csv_fn)
     
     else:
         csv_fn = raster_fn_without_ext + "_join.csv"
@@ -261,6 +270,3 @@ if __name__ == '__main__':
     
     
     
-directory = r'C:\Users\lezi\GitHub\Analytics\weather-data\leipzig'
-for filename in os.listdir(directory):
-     print(filename)
